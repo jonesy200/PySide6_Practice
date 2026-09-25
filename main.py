@@ -1,40 +1,41 @@
-from PySide6.QtWidgets import (QApplication, QMainWindow, QPushButton, QMessageBox
+from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QMessageBox, QLabel
 
-                               )
+
 from PySide6.QtCore import Qt
+
+class SecondaryWindow(QMainWindow):
+    def __init__(self,n):
+        super().__init__()
+
+        self.setWindowTitle(f"Window {n}")
+
+        label = QLabel(f"This is window {n}.")
+        label.setAlignment(Qt.AlignCenter)
+
+        self.setCentralWidget(label)
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
         self.setWindowTitle("My App")
-        self.setFixedSize(1000, 800)
+        self.setFixedSize(400, 300)
 
-        button = QPushButton("Show Choices")
-        button.clicked.connect(self.ask_choices)
+        button = QPushButton("Open Window")
+        button.clicked.connect(self.open_window)
 
         self.setCentralWidget(button)
 
+        self.count = 1
+        self.windows = []
 
-    def ask_choices(self):
-        msg = QMessageBox(self)
+    def open_window(self):
+        w = SecondaryWindow(self.count)
 
-        msg.setWindowTitle("Choice")
-        msg.setText("Please choose an option:")
+        self.count += 1
+        self.windows.append(w)
 
-        msg.addButton("Option 1", QMessageBox.AcceptRole)
-        msg.addButton("Option 2", QMessageBox.AcceptRole)
-        msg.addButton("Option 3", QMessageBox.AcceptRole)
-
-        msg.exec()
-
-        if msg.clickedButton().text() == "Option 1":
-            print("You chose Option 1")
-        elif msg.clickedButton().text() == "Option 2":
-            print("You chose Option 2")
-        elif msg.clickedButton().text() == "Option 3":
-            print("You chose Option 3")
-
+        w.show()
 
 app = QApplication()
 
