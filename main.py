@@ -10,24 +10,30 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("My App")
         self.setFixedSize(1000, 800)
 
-        menubar = self.menuBar()
-        file_menu = menubar.addMenu("File")
-        edit_menu = menubar.addMenu("Edit")
-        help_menu = menubar.addMenu("Help")
+        button = QPushButton("Show Choices")
+        button.clicked.connect(self.ask_choices)
 
-        aboutAction = help_menu.addAction("About")
-        aboutAction.triggered.connect(lambda: print("Tutorial help menu item clicked"))
+        self.setCentralWidget(button)
 
 
+    def ask_choices(self):
+        msg = QMessageBox(self)
 
-        submenu = file_menu.addMenu("Submenu")
-        exitAction = submenu.addAction("Exit")
+        msg.setWindowTitle("Choice")
+        msg.setText("Please choose an option:")
 
-        exitAction.triggered.connect(self.close)
+        msg.addButton("Option 1", QMessageBox.AcceptRole)
+        msg.addButton("Option 2", QMessageBox.AcceptRole)
+        msg.addButton("Option 3", QMessageBox.AcceptRole)
 
+        msg.exec()
 
-
-
+        if msg.clickedButton().text() == "Option 1":
+            print("You chose Option 1")
+        elif msg.clickedButton().text() == "Option 2":
+            print("You chose Option 2")
+        elif msg.clickedButton().text() == "Option 3":
+            print("You chose Option 3")
 
 
 app = QApplication()
