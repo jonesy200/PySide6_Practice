@@ -20,46 +20,49 @@ class MainWindow(QMainWindow):
         label.setAlignment(Qt.AlignCenter)
 
         button = QPushButton("Click Me")
-
-        line_edit = QLineEdit()
-        text_edit = QTextEdit()
-
-        combobox = QComboBox()
-        combobox.addItems(["Option 1", "Option 2", "Option 3"])
+        button.clicked.connect(self.on_button_clicked)
 
         list_widget = QListWidget()
         list_widget.addItems(["Item 1", "Item 2", "Item 3"])
 
+        list_widget.itemClicked.connect(lambda item: print(f"Clicked on {item.text()}"))
+        list_widget.itemDoubleClicked.connect(lambda item: print(f"Double clicked on {item.text()}"))
+
         inner_container = QWidget()
         inner_layout = QHBoxLayout(inner_container)
-
-        checkbox1 = QCheckBox("Check me")
-        checkbox2 = QCheckBox("Or me")
-        checkbox3 = QCheckBox("Or me too")
 
         radio1 = QRadioButton("Radio 1")
         radio2 = QRadioButton("Radio 2")
         radio3 = QRadioButton("Radio 3")
 
-        inner_layout.addWidget(checkbox1)
-        inner_layout.addWidget(checkbox2)
-        inner_layout.addWidget(checkbox3)
+        for r in (radio1, radio2, radio3):
+            r.toggled.connect(self.on_radio_changed)
+            r.clicked.connect(self.on_radio_clicked)
 
         inner_layout.addWidget(radio1)
         inner_layout.addWidget(radio2)
         inner_layout.addWidget(radio3)
 
-        slider = QSlider(Qt.Horizontal)
-        slider.setRange(0, 100)
-
         layout.addWidget(label)
         layout.addWidget(button)
-        layout.addWidget(line_edit)
-        layout.addWidget(text_edit)
-        layout.addWidget(combobox)
         layout.addWidget(list_widget)
         layout.addWidget(inner_container)
-        layout.addWidget(slider)
+
+    def on_button_clicked(self):
+        print("Button clicked!")
+
+    def on_radio_changed(self):
+        r = self.sender()
+        if r.isChecked():
+            print(f"{r.text()} is selected.")
+
+        else:
+            print(f"Unselected {r.text()}.")
+
+    def on_radio_clicked(self):
+        r = self.sender()
+        print(f"{r.text()} clicked.")
+
 
 app = QApplication()
 
