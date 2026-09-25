@@ -1,6 +1,5 @@
-from PySide6.QtWidgets import (QApplication, QMainWindow, QLabel, QLineEdit, QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
-                               QPushButton, QTextEdit, QSlider, QProgressBar, QComboBox, QListWidget, QRadioButton,
-                               QCheckBox, QSpinBox, QDoubleSpinBox, QDateEdit, QTimeEdit, QDateTimeEdit, QTabWidget, QStackedWidget,
+from PySide6.QtWidgets import (QApplication, QMainWindow
+
                                )
 from PySide6.QtCore import Qt
 
@@ -11,57 +10,24 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("My App")
         self.setFixedSize(1000, 800)
 
-        container = QWidget()
-        self.setCentralWidget(container)
+        menubar = self.menuBar()
+        file_menu = menubar.addMenu("File")
+        edit_menu = menubar.addMenu("Edit")
+        help_menu = menubar.addMenu("Help")
 
-        layout = QVBoxLayout(container)
+        aboutAction = help_menu.addAction("About")
+        aboutAction.triggered.connect(lambda: print("Tutorial help menu item clicked"))
 
-        label = QLabel("Hello, World!")
-        label.setAlignment(Qt.AlignCenter)
 
-        button = QPushButton("Click Me")
-        button.clicked.connect(self.on_button_clicked)
 
-        list_widget = QListWidget()
-        list_widget.addItems(["Item 1", "Item 2", "Item 3"])
+        submenu = file_menu.addMenu("Submenu")
+        exitAction = submenu.addAction("Exit")
 
-        list_widget.itemClicked.connect(lambda item: print(f"Clicked on {item.text()}"))
-        list_widget.itemDoubleClicked.connect(lambda item: print(f"Double clicked on {item.text()}"))
+        exitAction.triggered.connect(self.close)
 
-        inner_container = QWidget()
-        inner_layout = QHBoxLayout(inner_container)
 
-        radio1 = QRadioButton("Radio 1")
-        radio2 = QRadioButton("Radio 2")
-        radio3 = QRadioButton("Radio 3")
 
-        for r in (radio1, radio2, radio3):
-            r.toggled.connect(self.on_radio_changed)
-            r.clicked.connect(self.on_radio_clicked)
 
-        inner_layout.addWidget(radio1)
-        inner_layout.addWidget(radio2)
-        inner_layout.addWidget(radio3)
-
-        layout.addWidget(label)
-        layout.addWidget(button)
-        layout.addWidget(list_widget)
-        layout.addWidget(inner_container)
-
-    def on_button_clicked(self):
-        print("Button clicked!")
-
-    def on_radio_changed(self):
-        r = self.sender()
-        if r.isChecked():
-            print(f"{r.text()} is selected.")
-
-        else:
-            print(f"Unselected {r.text()}.")
-
-    def on_radio_clicked(self):
-        r = self.sender()
-        print(f"{r.text()} clicked.")
 
 
 app = QApplication()
